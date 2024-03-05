@@ -1,7 +1,9 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.servicios;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Diagnostico;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Historial;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioDiagnostico;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioHistorial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import java.util.List;
 public class ServicioDiagnostico {
 
     private final RepositorioDiagnostico repositorioDiagnostico;
+    private final RepositorioHistorial repositorioHistorial;
 
     @Autowired
-    public ServicioDiagnostico(RepositorioDiagnostico repositorioDiagnostico) {
+    public ServicioDiagnostico(RepositorioDiagnostico repositorioDiagnostico, RepositorioHistorial repositorioHistorial) {
         this.repositorioDiagnostico = repositorioDiagnostico;
+        this.repositorioHistorial = repositorioHistorial;
     }
 
     public boolean insertarActualizarDiagnostico(Diagnostico diagnostico) {
@@ -36,6 +40,7 @@ public class ServicioDiagnostico {
     }
 
     public List<Diagnostico> getDiagnosticosByHistorial(int id) {
-        return repositorioDiagnostico.findByHistorialIdHistorial(id);
+        Historial historial = repositorioHistorial.findById(id).orElse(null);
+        return repositorioDiagnostico.findByHistorial(historial);
     }
 }

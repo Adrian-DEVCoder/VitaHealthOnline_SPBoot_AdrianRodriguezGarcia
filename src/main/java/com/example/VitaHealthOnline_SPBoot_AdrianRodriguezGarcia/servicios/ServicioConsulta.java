@@ -1,18 +1,24 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.servicios;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Consulta;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Paciente;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioConsulta;
 import java.util.List;
+import java.util.Optional;
+
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioPaciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ServicioConsulta {
     private final RepositorioConsulta repositorioConsulta;
+    private final RepositorioPaciente repositorioPaciente;
 
     @Autowired
-    public ServicioConsulta(RepositorioConsulta repositorioConsulta) {
+    public ServicioConsulta(RepositorioConsulta repositorioConsulta, RepositorioPaciente repositorioPaciente) {
         this.repositorioConsulta = repositorioConsulta;
+        this.repositorioPaciente = repositorioPaciente;
     }
 
     public boolean insertarActualizarConsulta(Consulta consulta) {
@@ -34,6 +40,7 @@ public class ServicioConsulta {
     }
 
     public List<Consulta> obtenerConsultasPorPaciente(int id) {
-        return repositorioConsulta.findByPacienteIdPaciente(id);
+        Paciente paciente = repositorioPaciente.findById(id).orElse(null);
+        return repositorioConsulta.findByPaciente(paciente);
     }
 }
