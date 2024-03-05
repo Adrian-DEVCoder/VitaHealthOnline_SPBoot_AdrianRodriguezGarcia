@@ -25,13 +25,15 @@ public class ConfiguracionSeguridad {
         return new BCryptPasswordEncoder();
     }
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .requestMatchers("/login").permitAll() // Permite el acceso a la página de inicio de sesión sin autenticación
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -46,4 +48,5 @@ public class ConfiguracionSeguridad {
 
         return http.build();
     }
+
 }

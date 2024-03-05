@@ -8,7 +8,62 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" th:href="@{/static/estilos/pagina_medico.css}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            transition: background-color  0.5s ease, color  0.5s ease;
+        }
+        .navbar {
+            background-color: #007bff;
+        }
+        .navbar-brand {
+            color: white;
+        }
+        .card {
+            border-radius:   10px;
+            box-shadow:   0   4px   8px   0 rgba(0,0,0,0.2);
+            transition:   0.3s;
+        }
+        .card:hover {
+            box-shadow:   0   8px   16px   0 rgba(0,0,0,0.2);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .cards-container{
+            margin-top:  2rem;
+        }
+        .theme-dark {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .theme-dark .navbar {
+            background-color: #343a40;
+        }
+        .theme-dark .card {
+            background-color: #495057;
+            color: #fff;
+        }
+        .theme-dark .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .theme-dark .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
