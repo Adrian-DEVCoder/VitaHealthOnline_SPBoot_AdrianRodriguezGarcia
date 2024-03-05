@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Registro Historial</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/estilos/agregar_registro_historial.css}">
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center my-4">Agregar Registro al Historial del Paciente</h2>
+    <form action="./agregar_registro_historial" method="post" th:object="${historial}">
+        <div class="form-group">
+            <label for="diagnostico">Diagnóstico:</label>
+            <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="tratamiento">Tratamiento:</label>
+            <textarea id="tratamiento" name="tratamiento" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="idHistorial" th:value="${historial.id_historial}">
+            <input type="hidden" name="idPaciente" th:value="${idPaciente}">
+            <button type="submit" class="btn btn-primary btn-block">Añadir Registro</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

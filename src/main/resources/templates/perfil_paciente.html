@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Perfil del Paciente</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    h2{
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Editar Perfil del Paciente</h2>
+  <a href="./pagina_paciente" class="btn btn-secondary mb-3">Volver al Panel de Control</a>
+  <form action="./guardarCambios" method="post" th:object="${paciente}">
+    <div class="form-group">
+      <label for="nombrePaciente">Nombre del Paciente:</label>
+      <input type="text" class="form-control" id="nombrePaciente" name="nombrePaciente" th:value="${paciente.nombre_paciente}">
+    </div>
+    <div class="form-group">
+      <label for="apellidosPaciente">Apellidos del Paciente:</label>
+      <input type="text" class="form-control" id="apellidosPaciente" name="apellidosPaciente" th:value="${paciente.apellidos_paciente}">
+    </div>
+    <div class="form-group">
+      <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+      <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" th:value="${paciente.fechaNacimiento}">
+    </div>
+    <div class="form-group">
+      <label for="sexo">Sexo:</label>
+      <input type="text" class="form-control" id="sexo" name="sexo" th:value="${paciente.sexo}">
+    </div>
+    <div class="form-group">
+      <label for="direccion">Dirección:</label>
+      <input type="text" class="form-control" id="direccion" name="direccion" th:value="${paciente.direccion}">
+    </div>
+    <div class="form-group">
+      <label for="correoElectronico">Correo Electrónico:</label>
+      <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" th:value="${paciente.correo_electronico}">
+    </div>
+    <div class="form-group">
+      <label for="telefono">Teléfono:</label>
+      <input type="text" class="form-control" id="telefono" name="telefono" th:value="${paciente.telefono}">
+    </div>
+    <div class="form-group">
+      <label for="nombreUsuario">Nombre de Usuario:</label>
+      <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:value="${usuario.nombre}">
+    </div>
+    <div class="form-group">
+      <label for="contrasena">Contraseña:</label>
+      <input type="password" class="form-control" id="contrasena" name="contrasena" th:value="${usuario.contrasena}">
+      <div class="input-group-append">
+        <button id="toggleBtn" class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility()">Mostrar</button>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+  </form>
+</div>
+<script>
+  function togglePasswordVisibility() {
+    var passwordField = document.getElementById("contrasena");
+    var toggleButton = document.getElementById("toggleBtn");
+
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      toggleButton.textContent = "Ocultar";
+    } else {
+      passwordField.type = "password";
+      toggleButton.textContent = "Mostrar";
+    }
+  }
+</script>
+</body>
+</html>

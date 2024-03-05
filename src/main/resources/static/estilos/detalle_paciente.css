@@ -1,0 +1,22 @@
+body {
+    padding:   0;
+    margin:   0;
+}
+.btn-volver {
+    margin-top: 20px;
+}
+.paciente-info, .consulta-info {
+    margin-top:   20px;
+}
+.historial, .datos-salud {
+    margin-left: 60px;
+    margin-top: 20px;
+    margin-bottom:  50px;
+}
+.btn-nuevo-registro{
+    margin-top: 30px;
+}
+.btn-nueva-consulta{
+    margin-bottom: 30px;
+    margin-top: 20px;
+}

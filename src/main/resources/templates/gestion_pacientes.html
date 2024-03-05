@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>VitaHealth - Online | Gestión Pacientes</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/static/estilos/gestion_pacientes.css}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">VitaHealth</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="./pagina_medico">Panel de Control</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="container-titulo">
+    <h1>Gestión de Pacientes</h1>
+  </div>
+  <div class="container-buscador">
+    <input type="text" class="form-control" placeholder="Nombre del paciente...">
+  </div>
+  <div th:each="paciente : ${pacientes}">
+    <div class="paciente-card">
+      <div class="paciente-info">
+        <img src="https://definicion.de/wp-content/uploads/2019/07/perfil-de-usuario.png" alt="Foto del paciente" class="paciente-foto">
+        <div>
+          <h3 th:text="${paciente.nombre_paciente} + ' ' + ${paciente.apellidos_paciente}"></h3>
+          <p>Correo Electronico: <span th:text="${paciente.correo_electronico}"></span></p>
+          <p>Género: <span th:text="${paciente.sexo}"></span></p>
+          <p>Localidad: <span th:text="${paciente.direccion}"></span></p>
+          <p>Fecha de nacimiento: <span th:text="${#dates.format(paciente.fecha_nacimiento, 'yyyy-MM-dd')}"></span></p>
+        </div>
+      </div>
+      <a th:href="@{/detalle_paciente(id=${paciente.id_paciente})}" class="ver-detalles-btn">Ver Detalles</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

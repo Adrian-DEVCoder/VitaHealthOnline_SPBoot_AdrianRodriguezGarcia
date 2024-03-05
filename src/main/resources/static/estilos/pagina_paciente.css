@@ -1,0 +1,74 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    transition: background-color  0.5s ease, color  0.5s ease;
+}
+
+body.theme-dark {
+    background-color: #343a40;
+    color: #fff;
+}
+
+body.theme-light {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.navbar {
+    background-color: #007bff;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.card {
+    border-radius:  10px;
+    box-shadow:  0  4px  8px  0 rgba(0,0,0,0.2);
+    transition:  0.3s;
+    margin-bottom: 2rem;
+}
+
+.theme-dark .card {
+    background-color: #495057;
+    color: #fff;
+}
+
+.card:hover {
+    box-shadow:  0  8px  16px  0 rgba(0,0,0,0.2);
+}
+
+.section-title {
+    font-size:  24px;
+    margin:  0;
+    padding:  20px;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+}
+
+.button {
+    display: block;
+    width:  100%;
+    padding:  10px;
+    background-color: #007bff;
+    text-decoration: none;
+    color: #fff;
+    border: none;
+    border-radius:  5px;
+    text-align: center;
+    transition: background-color  0.3s ease;
+    margin-bottom:  10px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+    color: #f0f0f0;
+    text-decoration: none;
+}
+.section-content {
+    padding:  20px;
+}
+
+.main-content {
+    margin-top:  2rem;
+}

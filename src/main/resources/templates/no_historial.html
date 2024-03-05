@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>No hay Historial Registrado</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/static/estilos/no_historial.css}">
+</head>
+<body>
+<div class="container">
+  <h2 class="text-center my-4">No hay Historial Registrado para este Paciente</h2>
+  <p class="text-center">Este paciente no tiene un historial registrado. ¿Desea crear un historial para este paciente?</p>
+  <div class="text-center">
+    <a th:href="@{/crear_historial(id=${idPaciente})}" class="btn btn-primary">Crear Historial</a>
+  </div>
+</div>
+</body>
+</html>

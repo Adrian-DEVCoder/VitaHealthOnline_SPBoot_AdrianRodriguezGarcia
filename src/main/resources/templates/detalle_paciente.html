@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Paciente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/static/estilos/detalle_paciente.css}">
+</head>
+<body>
+<div class="container">
+    <button class="btn btn-primary btn-volver" onclick="window.history.back();">Volver a la Gestión de Pacientes</button>
+    <div class="row">
+        <!--Informacion del Paciente y Consultas-->
+        <div class="col-md-3">
+            <div class="paciente-info">
+                <h2>Información del Paciente</h2>
+                <p><strong>Nombre:</strong> <span th:text="${paciente.nombre_paciente} ${paciente.apellidos_paciente}"></span></p>
+                <p><strong>Correo Electrónico:</strong> <span th:text="${paciente.correo_electronico}"></span></p>
+                <p><strong>Telefono:</strong> <span th:text="${paciente.telefono}"></span></p>
+                <p><strong>Género:</strong> <span th:text="${paciente.sexo}"></span></p>
+                <p><strong>Direccion:</strong> <span th:text="${paciente.direccion}"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span th:text="${fechaNacimiento}"></span></p>
+            </div>
+            <div class="consulta-info">
+                <h2>Consultas del Paciente</h2>
+                <div th:if="${not #lists.isEmpty(consultas)}">
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="consulta : ${consultas}">
+                            <span th:text="${fechaConsulta} - ${consulta.tipo_consulta}"></span>
+                        </li>
+                        <button class="btn btn-primary btn-nueva-consulta" th:onclick="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
+                            Añadir Nueva Consulta
+                        </button>
+                    </ul>
+                </div>
+                <div th:if="${#lists.isEmpty(consultas)}">
+                    <p>No hay consultas registradas para este paciente.</p>
+                    <button class="btn btn-primary btn-nueva-consulta" th:onclick="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
+                        Añadir Nueva Consulta
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Informacion del historial y Datos de Salud -->
+        <div class="col-md-9">
+            <div class="historial">
+                <h2>Historial del Paciente</h2>
+                <div th:if="${not #lists.isEmpty(historial.diagnosticos)}">
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="diagnostico : ${historial.diagnosticos}">
+                            <span th:text="${diagnostico.diagnostico}"></span>
+                            <span th:text="${diagnostico.tratamiento}"></span>
+                        </li>
+                        <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
+                        <button class="btn btn-primary btn-nuevo-registro" th:onclick="'window.location.href=\'./agregar_registro_historial\''">
+                            Añadir Nuevo Registro al Historial
+                        </button>
+                    </ul>
+                </div>
+                <div th:if="${#lists.isEmpty(historial.diagnosticos)}">
+                    <p>No hay datos de historial registrados para este paciente.</p>
+                    <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
+                    <button class="btn btn-primary btn-nuevo-registro" th:onclick="'window.location.href=\'./agregar_registro_historial\''">
+                        Añadir Nuevo Registro al Historial
+                    </button>
+                </div>
+            </div>
+            <div class="datos-salud">
+                <h2>Datos Salud del Paciente</h2>
+                <div th:if="${not #lists.isEmpty(datosSalud)}">
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="datoSalud : ${datosSalud}">
+                            <span th:text="${fechaDatosSalud} - ${datoSalud.tipo_dato} - ${datoSalud.valor_dato} ${datoSalud.unidad_medida}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div th:if="${#lists.isEmpty(datosSalud)}">
+                    <p>No hay datos de salud registrados para este paciente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
