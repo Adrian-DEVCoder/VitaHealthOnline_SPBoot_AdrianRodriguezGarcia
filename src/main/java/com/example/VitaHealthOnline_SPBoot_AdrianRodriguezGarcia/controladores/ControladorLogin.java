@@ -29,10 +29,9 @@ public class ControladorLogin {
     public String logout(){
         return "logout";
     }
-
     @PostMapping("/logout")
     public String procesarLogout(){
-        return "/";
+        return "iniciar_sesion";
     }
 
 }
