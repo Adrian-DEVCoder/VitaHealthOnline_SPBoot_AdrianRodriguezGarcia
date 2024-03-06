@@ -28,30 +28,28 @@
             margin-bottom: 30px;
             margin-top: 20px;
         }
-
     </style>
 </head>
 <body>
 <div class="container">
     <button class="btn btn-primary btn-volver" onclick="window.history.back();">Volver a la Gestión de Pacientes</button>
     <div class="row">
-        <!--Informacion del Paciente y Consultas-->
         <div class="col-md-3">
             <div class="paciente-info">
                 <h2>Información del Paciente</h2>
-                <p><strong>Nombre:</strong> <span th:text="${paciente.nombre_paciente} ${paciente.apellidos_paciente}"></span></p>
+                <p><strong>Nombre:</strong> <span th:text="${paciente.nombre_paciente} + ' ' + ${paciente.apellidos_paciente}"></span></p>
                 <p><strong>Correo Electrónico:</strong> <span th:text="${paciente.correo_electronico}"></span></p>
                 <p><strong>Telefono:</strong> <span th:text="${paciente.telefono}"></span></p>
                 <p><strong>Género:</strong> <span th:text="${paciente.sexo}"></span></p>
                 <p><strong>Direccion:</strong> <span th:text="${paciente.direccion}"></span></p>
-                <p><strong>Fecha de Nacimiento:</strong> <span th:text="${fechaNacimiento}"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span th:text="${paciente.fechaNacimiento}"></span></p>
             </div>
             <div class="consulta-info">
                 <h2>Consultas del Paciente</h2>
                 <div th:if="${not #lists.isEmpty(consultas)}">
                     <ul class="list-group">
                         <li class="list-group-item" th:each="consulta : ${consultas}">
-                            <span th:text="${fechaConsulta} - ${consulta.tipo_consulta}"></span>
+                            <span th:text="${consulta.fecha_consulta} - ${consulta.tipo_consulta}"></span>
                         </li>
                         <button class="btn btn-primary btn-nueva-consulta" th:onclick="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
                             Añadir Nueva Consulta
@@ -60,7 +58,7 @@
                 </div>
                 <div th:if="${#lists.isEmpty(consultas)}">
                     <p>No hay consultas registradas para este paciente.</p>
-                    <button class="btn btn-primary btn-nueva-consulta" th:onclick="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
+                    <button class="btn btn-primary btn-nueva-consulta" th:href="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
                         Añadir Nueva Consulta
                     </button>
                 </div>
@@ -70,24 +68,32 @@
         <div class="col-md-9">
             <div class="historial">
                 <h2>Historial del Paciente</h2>
-                <div th:if="${not #lists.isEmpty(historial.diagnosticos)}">
-                    <ul class="list-group">
-                        <li class="list-group-item" th:each="diagnostico : ${historial.diagnosticos}">
-                            <span th:text="${diagnostico.diagnostico}"></span>
-                            <span th:text="${diagnostico.tratamiento}"></span>
-                        </li>
+                <div th:if="${historial != null}">
+                    <div th:if="${historial.diagnosticos != null}">
+                        <ul class="list-group">
+                            <li class="list-group-item" th:each="diagnostico : ${historial.diagnosticos}">
+                                <span th:text="${diagnostico.diagnostico}"></span>
+                                <span th:text="${diagnostico.tratamiento}"></span>
+                            </li>
+                            <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
+                            <a href="./agregar_registro_historial" class="btn btn-primary btn-nuevo-registro">
+                                Añadir Nuevo Registro al Historial
+                            </a>
+                        </ul>
+                    </div>
+                    <div th:if="${historial.diagnosticos == null}">
+                        <p>No hay datos de historial registrados para este paciente.</p>
                         <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
-                        <button class="btn btn-primary btn-nuevo-registro" th:onclick="'window.location.href=\'./agregar_registro_historial\''">
+                        <a href="./agregar_registro_historial" class="btn btn-primary btn-nuevo-registro">
                             Añadir Nuevo Registro al Historial
-                        </button>
-                    </ul>
+                        </a>
+                    </div>
                 </div>
-                <div th:if="${#lists.isEmpty(historial.diagnosticos)}">
+                <div th:if="${historial == null}">
                     <p>No hay datos de historial registrados para este paciente.</p>
-                    <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
-                    <button class="btn btn-primary btn-nuevo-registro" th:onclick="'window.location.href=\'./agregar_registro_historial\''">
+                    <a href="./agregar_registro_historial" class="btn btn-primary btn-nuevo-registro">
                         Añadir Nuevo Registro al Historial
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="datos-salud">
@@ -95,7 +101,7 @@
                 <div th:if="${not #lists.isEmpty(datosSalud)}">
                     <ul class="list-group">
                         <li class="list-group-item" th:each="datoSalud : ${datosSalud}">
-                            <span th:text="${fechaDatosSalud} - ${datoSalud.tipo_dato} - ${datoSalud.valor_dato} ${datoSalud.unidad_medida}"></span>
+                            <span th:text="${datoSalud.fecha_dato} - ${datoSalud.tipo_dato} - ${datoSalud.valor_dato} ${datoSalud.unidad_medida}"></span>
                         </li>
                     </ul>
                 </div>

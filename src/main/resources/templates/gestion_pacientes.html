@@ -97,7 +97,7 @@
           <p>Fecha de nacimiento: <span th:text="${#dates.format(paciente.fechaNacimiento, 'yyyy-MM-dd')}"></span></p>
         </div>
       </div>
-      <a th:href="@{/detalle_paciente(id=${paciente.id_paciente})}" class="ver-detalles-btn">Ver Detalles</a>
+      <a th:href="@{./detalle_paciente(id=${paciente.id_paciente})}" class="ver-detalles-btn">Ver Detalles</a>
     </div>
   </div>
 </div>

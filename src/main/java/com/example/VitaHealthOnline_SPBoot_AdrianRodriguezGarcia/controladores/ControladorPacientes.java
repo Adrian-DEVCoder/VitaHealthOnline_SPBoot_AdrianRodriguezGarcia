@@ -154,5 +154,28 @@ public class ControladorPacientes {
         return "redirect:/perfil";
     }
 
+    @PreAuthorize("hasRole('PACIENTE')")
+    @GetMapping("/consulta_en_linea")
+    public String consultaEnLinea(){
+        return "consulta_en_linea";
+    }
+
+    @PreAuthorize("hasRole('PACIENTE')")
+    @GetMapping("/historial_clinico")
+    public String historialClinico(){
+        return "historial_clinico";
+    }
+
+    @PreAuthorize("hasRole('PACIENTE')")
+    @GetMapping("/seguimiento_salud")
+    public String seguimientoSalud(){
+        return "seguimiento_salud";
+    }
+
+    @PreAuthorize("hasRole('PACIENTE')")
+    @GetMapping("/mensajes")
+    public String mensajes(){
+        return "mensajes_paciente";
+    }
 
 }

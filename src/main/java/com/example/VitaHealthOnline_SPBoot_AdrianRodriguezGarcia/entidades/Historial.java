@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ public class Historial {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_medico")
     private Medico medico;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha_registro;
 
     @OneToMany(mappedBy = "historial", cascade = CascadeType.ALL)
