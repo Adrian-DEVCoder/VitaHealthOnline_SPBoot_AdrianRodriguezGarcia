@@ -1,14 +1,14 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
+@Component
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "DIAGNOSTICOS")
 public class Diagnostico {

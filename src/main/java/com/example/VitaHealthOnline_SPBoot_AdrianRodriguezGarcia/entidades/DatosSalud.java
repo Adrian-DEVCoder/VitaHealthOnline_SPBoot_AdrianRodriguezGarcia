@@ -1,14 +1,19 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
+@Component
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "DATOSSALUD")
 public class DatosSalud {
