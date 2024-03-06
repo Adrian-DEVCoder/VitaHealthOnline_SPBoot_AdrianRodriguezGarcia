@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,7 +26,8 @@ public class Paciente {
 
     private String nombre_paciente;
     private String apellidos_paciente;
-    private Date fecha_nacimiento;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date fechaNacimiento;
     private String sexo;
     private String direccion;
     private String correo_electronico;

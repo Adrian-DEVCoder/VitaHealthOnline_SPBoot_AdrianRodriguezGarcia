@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cambiar Contraseña</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Cambiar Contraseña</h2>
+    <form action="#" th:action="@{/cambiar_contrasena}" method="post">
+        <div class="form-group">
+            <label for="contrasenaActual">Contraseña Actual:</label>
+            <input type="password" class="form-control" id="contrasenaActual" name="contrasenaActual">
+            <div class="input-group-append">
+                <button id="toggleBtnActual" class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('contrasenaActual')">Mostrar</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nuevaContrasena">Nueva Contraseña:</label>
+            <input type="password" class="form-control" id="nuevaContrasena" name="nuevaContrasena">
+            <div class="input-group-append">
+                <button id="toggleBtnNueva" class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('nuevaContrasena')">Mostrar</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirmacionContrasena">Confirmar Nueva Contraseña:</label>
+            <input type="password" class="form-control" id="confirmacionContrasena" name="confirmacionContrasena">
+            <div class="input-group-append">
+                <button id="toggleBtnConfirmacion" class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('confirmacionContrasena')">Mostrar</button>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+    </form>
+</div>
+<script>
+    function togglePasswordVisibility(inputId) {
+        var passwordField = document.getElementById(inputId);
+        var toggleButton = document.getElementById("toggleBtn" + inputId.charAt(0).toUpperCase() + inputId.slice(1));
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleButton.textContent = "Ocultar";
+        } else {
+            passwordField.type = "password";
+            toggleButton.textContent = "Mostrar";
+        }
+    }
+</script>
+</body>
+</html>
