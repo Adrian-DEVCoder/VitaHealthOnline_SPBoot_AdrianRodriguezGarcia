@@ -1,10 +1,7 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.controladores;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.*;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioConsulta;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioDatosSalud;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioHistorial;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioPaciente;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,6 +23,8 @@ public class ControladorMedicos {
     RepositorioDatosSalud repositorioDatosSalud;
     @Autowired
     RepositorioHistorial repositorioHistorial;
+    @Autowired
+    RepositorioDiagnostico repositorioDiagnostico;
     @Autowired
     Diagnostico diagnostico;
     @Autowired
@@ -72,6 +71,35 @@ public class ControladorMedicos {
             }
         }
         return "redirect:/gestion_pacientes";
+    }
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/agregar_registro_historial")
+    public String agregarRegistroHistorial(){
+        return "agregar_registro_historial";
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/agregar_registro_historial")
+    public String procesarAgregarRegistroHistorial(@RequestParam("idHistorial") String idHistorials,
+                                                   @RequestParam("idPaciente") String idPaciente,
+                                                   @RequestParam("diagnostico") String diagnostico,
+                                                   @RequestParam("tratamiento") String tratamiento){
+        if(!idHistorials.isEmpty()){
+            int idHistorial = Integer.parseInt(idHistorials);
+            Historial historial = repositorioHistorial.findById(idHistorial).orElse(null);
+            if(historial != null){
+                List<Diagnostico> diagnosticos = repositorioDiagnostico.findByHistorial(historial);
+                Diagnostico nuevoDiagnostico = new Diagnostico();
+                nuevoDiagnostico.setDiagnostico(diagnostico);
+                nuevoDiagnostico.setTratamiento(tratamiento);
+                repositorioDiagnostico.save(nuevoDiagnostico);
+                diagnosticos.add(nuevoDiagnostico);
+                historial.setDiagnosticos(diagnosticos);
+                repositorioHistorial.save(historial)
+            } else {
+                // Implementar el caso si no tiene historial
+            }
+        }
     }
 
     @PreAuthorize("hasRole('MEDICO')")
