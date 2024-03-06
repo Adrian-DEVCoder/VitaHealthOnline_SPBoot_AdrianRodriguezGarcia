@@ -4,12 +4,16 @@ import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.*;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -26,6 +30,12 @@ public class ControladorMedicos {
     @Autowired
     RepositorioDiagnostico repositorioDiagnostico;
     @Autowired
+    RepositorioMedico repositorioMedico;
+    @Autowired
+    RepositorioUsuario repositorioUsuario;
+    @Autowired
+    Medico medico;
+    @Autowired
     Diagnostico diagnostico;
     @Autowired
     Historial historial;
@@ -39,7 +49,27 @@ public class ControladorMedicos {
     @PreAuthorize("hasRole('MEDICO')")
     @GetMapping("/pagina_medico")
     public String paginaMedico(){
-        return "pagina_medico";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String nombreUsuario = authentication.getName();
+        Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(nombreUsuario);
+        Medico medicoActual = repositorioMedico.findMedicoByUsuario(usuarioActual);
+        boolean tieneDatos = verificarDatosRegistrados(medicoActual);
+        if(tieneDatos){
+            return "pagina_medico";
+        } else {
+            return "no_medico_registrado";
+        }
+    }
+
+    private boolean verificarDatosRegistrados(Medico medico){
+        return repositorioMedico.countByMedico(medico) > 0;
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/registro_medico")
+    public String registroMedico(Model model){
+        model.addAttribute("nuevopaciente", paciente);
+        return "registro_medico";
     }
 
     @PreAuthorize("hasRole('MEDICO')")
@@ -74,31 +104,83 @@ public class ControladorMedicos {
     }
     @PreAuthorize("hasRole('MEDICO')")
     @GetMapping("/agregar_registro_historial")
-    public String agregarRegistroHistorial(){
-        return "agregar_registro_historial";
+    public String agregarRegistroHistorial(@RequestParam("id") int idPaciente, Model model){
+        Paciente paciente = repositorioPaciente.findById(idPaciente).orElse(null);
+        Historial historial = repositorioHistorial.findHistorialByPaciente(paciente);
+        if(historial != null){
+            model.addAttribute("historial", historial);
+            model.addAttribute("paciente", paciente);
+            return "agregar_registro_historial";
+        } else {
+            // Redirige al usuario a la página "no_historial" para crear un nuevo historial
+            return "redirect:/no_historial?id=" + idPaciente;
+        }
     }
 
+
     @PreAuthorize("hasRole('MEDICO')")
-    @GetMapping("/agregar_registro_historial")
-    public String procesarAgregarRegistroHistorial(@RequestParam("idHistorial") String idHistorials,
+    @PostMapping("/agregar_registro_historial")
+    public String procesarAgregarRegistroHistorial(@RequestParam("idHistorial") int idHistorial,
                                                    @RequestParam("idPaciente") String idPaciente,
                                                    @RequestParam("diagnostico") String diagnostico,
                                                    @RequestParam("tratamiento") String tratamiento){
-        if(!idHistorials.isEmpty()){
-            int idHistorial = Integer.parseInt(idHistorials);
+        if(idHistorial != 0){
             Historial historial = repositorioHistorial.findById(idHistorial).orElse(null);
             if(historial != null){
-                List<Diagnostico> diagnosticos = repositorioDiagnostico.findByHistorial(historial);
                 Diagnostico nuevoDiagnostico = new Diagnostico();
                 nuevoDiagnostico.setDiagnostico(diagnostico);
                 nuevoDiagnostico.setTratamiento(tratamiento);
+                nuevoDiagnostico.setHistorial(historial);
                 repositorioDiagnostico.save(nuevoDiagnostico);
-                diagnosticos.add(nuevoDiagnostico);
-                historial.setDiagnosticos(diagnosticos);
-                repositorioHistorial.save(historial)
+                return "redirect:/detalle_paciente?id="+idPaciente;
             } else {
-                // Implementar el caso si no tiene historial
+                return "redirect:/gestion_pacientes";
             }
+        } else {
+            return "redirect:/no_historial?id="+idPaciente;
+        }
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/no_historial")
+    public String noHistorial(@RequestParam("id") int idPaciente, Model model){
+        Paciente paciente = repositorioPaciente.findById(idPaciente).orElse(null);
+        if(paciente != null){
+            model.addAttribute("paciente", paciente);
+            return "no_historial";
+        } else {
+            return "redirect:/gestion_pacientes";
+        }
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/crear_historial")
+    public String crearHistorial(Model model){
+        List<Medico> medicos = repositorioMedico.findAll();
+        List<Paciente> pacientes = repositorioPaciente.findAll();
+        model.addAttribute("medicos", medicos);
+        model.addAttribute("pacientes", pacientes);
+        return "crear_historial";
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @PostMapping("/agregar_historial")
+    public String agregarHistorial(@RequestParam("idPaciente") int idPaciente,
+                                   @RequestParam("medico") int idMedico){
+        try{
+            Medico medico = repositorioMedico.findById(idMedico).orElse(null);
+            if(medico != null){
+                Historial nuevoHistorial = new Historial();
+                nuevoHistorial.setMedico(medico);
+                Paciente paciente = repositorioPaciente.findById(idPaciente).orElse(null);
+                nuevoHistorial.setPaciente(paciente);
+                nuevoHistorial.setFecha_registro(new Date());
+                return "redirect:/detalle_paciente?id="+idPaciente;
+            } else {
+                return "redirect:/gestion_pacientes";
+            }
+        } catch (Exception e){
+            return "redirect:/gestion_pacientes";
         }
     }
 

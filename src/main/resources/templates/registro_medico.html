@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>VitaHealt - Online | Registro de Médico</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        h2{
+            margin-top:  2rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Insertar Nuevo Perfil de Médico</h2>
+    <form action="#" th:action="@{/insertar_medico}" th:object="${nuevomedico}" method="post">
+        <div class="form-group">
+            <label for="nombre_profesional">Nombre Profesional:</label>
+            <input type="text" class="form-control" id="nombre_profesional" th:field="*{nombre_profesional}" required>
+        </div>
+        <div class="form-group">
+            <label for="apellidos_profesional">Apellidos Profesional:</label>
+            <input type="text" class="form-control" id="apellidos_profesional" th:field="*{apellidos_profesional}" required>
+        </div>
+        <div class="form-group">
+            <label for="especialidad">Especialidad:</label>
+            <input type="text" class="form-control" id="especialidad" th:field="*{especialidad}" required>
+        </div>
+        <div class="form-group">
+            <label for="correo_electronico">Correo Electrónico:</label>
+            <input type="email" class="form-control" id="correo_electronico" th:field="*{correo_electronico}" required>
+        </div>
+        <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" class="form-control" id="telefono" th:field="*{telefono}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Insertar Nuevo Médico</button>
+    </form>
+</div>
+</body>
+</html>

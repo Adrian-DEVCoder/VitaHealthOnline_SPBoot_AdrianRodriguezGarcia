@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Creacion Historial Paciente</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2 class="my-4">Creacion Historial Paciente</h2>
+    <form th:action="@{/agregar_historial}" method="post">
+        <div class="form-group">
+            <label for="paciente">Selecciona al paciente:</label>
+            <select name="idPaciente" id="paciente" class="form-control">
+                <option th:each="paciente : ${pacientes}" th:value="${paciente.id_paciente}" th:text="${paciente.nombre_paciente} + ' ' + ${paciente.apellidos_paciente}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="medico">Selecciona al médico:</label>
+            <select name="medico" id="medico" class="form-control">
+                <option th:each="medico : ${medicos}" th:value="${medico.id_profesional}" th:text="${medico.nombre_profesional} + ' ' + ${medico.apellidos_profesional}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Historial</button>
+    </form>
+</div>
+</body>
+</html>

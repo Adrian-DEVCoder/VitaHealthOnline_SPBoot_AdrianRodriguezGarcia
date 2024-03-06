@@ -75,23 +75,21 @@
                                 <span th:text="${diagnostico.diagnostico}"></span>
                                 <span th:text="${diagnostico.tratamiento}"></span>
                             </li>
-                            <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
-                            <a href="./agregar_registro_historial" class="btn btn-primary btn-nuevo-registro">
+                            <a th:href="@{/agregar_registro_historial(id=${paciente.id_paciente})}" class="btn btn-primary btn-nuevo-registro">
                                 Añadir Nuevo Registro al Historial
                             </a>
                         </ul>
                     </div>
                     <div th:if="${historial.diagnosticos == null}">
                         <p>No hay datos de historial registrados para este paciente.</p>
-                        <input type="hidden" name="idPaciente" th:value="${paciente.id_paciente}">
-                        <a href="./agregar_registro_historial" class="btn btn-primary btn-nuevo-registro">
+                        <a th:href="@{/agregar_registro_historial(id=${paciente.id_paciente})}" class="btn btn-primary btn-nuevo-registro">
                             Añadir Nuevo Registro al Historial
                         </a>
                     </div>
                 </div>
                 <div th:if="${historial == null}">
                     <p>No hay datos de historial registrados para este paciente.</p>
-                    <a href="./agregar_registro_historial" class="btn btn-primary btn-nuevo-registro">
+                    <a th:href="@{/agregar_registro_historial(id=${paciente.id_paciente})}" class="btn btn-primary btn-nuevo-registro">
                         Añadir Nuevo Registro al Historial
                     </a>
                 </div>
