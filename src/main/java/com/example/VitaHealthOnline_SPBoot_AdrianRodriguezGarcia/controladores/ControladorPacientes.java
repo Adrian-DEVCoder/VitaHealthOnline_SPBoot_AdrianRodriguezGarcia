@@ -131,5 +131,28 @@ public class ControladorPacientes {
         }
     }
 
+    @PreAuthorize("hasRole('PACIENTE')")
+    @PostMapping("/guardar_cambios")
+    public String guardarCambios(@ModelAttribute("nuevopaciente") Paciente paciente,
+                                 @AuthenticationPrincipal UserDetails userDetails){
+        String username = userDetails.getUsername();
+        Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(username);
+        if(usuarioActual != null && usuarioActual.getRol().equals("PACIENTE")){
+            Paciente nuevoPaciente = repositorioPaciente.findPacienteByUsuario(usuarioActual);
+            nuevoPaciente.setNombre_paciente(paciente.getNombre_paciente());
+            nuevoPaciente.setApellidos_paciente(paciente.getApellidos_paciente());
+            nuevoPaciente.setFechaNacimiento(paciente.getFechaNacimiento());
+            nuevoPaciente.setSexo(paciente.getSexo());
+            nuevoPaciente.setDireccion(paciente.getDireccion());
+            nuevoPaciente.setCorreo_electronico(paciente.getCorreo_electronico());
+            nuevoPaciente.setTelefono(paciente.getTelefono());
+            nuevoPaciente.setUsuario(usuarioActual);
+            usuarioActual.setNombre(paciente.getUsuario().getNombre());
+            repositorioPaciente.save(nuevoPaciente);
+            repositorioUsuario.save(usuarioActual);
+        }
+        return "redirect:/perfil";
+    }
+
 
 }
