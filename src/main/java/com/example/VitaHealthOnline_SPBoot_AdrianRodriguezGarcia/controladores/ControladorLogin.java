@@ -34,4 +34,18 @@ public class ControladorLogin {
         return "iniciar_sesion";
     }
 
+    @GetMapping("/")
+    public String home(Model model, Authentication authentication) {
+        if (authentication != null && authentication.getAuthorities() != null) {
+            for (GrantedAuthority authority : authentication.getAuthorities()) {
+                if (authority.getAuthority().equals("ROLE_MEDICO")) {
+                    return "redirect:/pagina_medico";
+                } else if (authority.getAuthority().equals("ROLE_PACIENTE")) {
+                    return "redirect:/pagina_paciente";
+                }
+            }
+        }
+        return "redirect:/login";
+    }
+
 }
