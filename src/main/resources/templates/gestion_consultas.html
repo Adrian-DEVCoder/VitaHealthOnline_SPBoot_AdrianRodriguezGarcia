@@ -74,51 +74,10 @@
 
 <div class="container">
   <h1 class="mb-4">Gestión de Consultas</h1>
-
-  <!-- Filtros de búsqueda -->
-  <div class="card">
-    <div class="card-body">
-      <form action="#" th:action="@{/filtrar_consultas}" th:object="${consulta}" method="get">
-        <div class="form-row">
-          <div class="col-md-4">
-            <label for="tipoConsulta">Tipo de Consulta:</label>
-            <select class="form-control" id="tipoConsulta" th:field="*{tipoConsulta}" required>
-              <option th:value="..">Seleccione un tipo de consulta</option>
-              <option th:value="Analisis_De_Sangre">Análisis de Sangre</option>
-              <option th:value="Consulta_General">Consulta General</option>
-              <option th:value="Especialista">Consulta con Especialista</option>
-              <option th:value="Revisión_Medica">Revisión Médica</option>
-              <option th:value="Ecografía">Ecografía</option>
-              <option th:value="Radiografía">Radiografía</option>
-              <option th:value="Mamografía">Mamografía</option>
-              <option th:value="Ultrasonido">Ultrasonido</option>
-              <option th:value="Endoscopia">Endoscopia</option>
-              <option th:value="Colonoscopia">Colonoscopia</option>
-              <option th:value="Consulta_Pediatrica">Consulta Pediátrica</option>
-              <option th:value="Consulta_Ginecologica">Consulta Ginecológica</option>
-              <option th:value="Consulta_Cardiologica">Consulta Cardiológica</option>
-              <option th:value="Consulta_Neurologica">Consulta Neurológica</option>
-              <option th:value="Consulta_Dermatologica">Consulta Dermatológica</option>
-              <option th:value="Consulta_Oftalmologica">Consulta Oftalmológica</option>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label for="estado">Estado:</label>
-            <select class="form-control" id="estado" name="estado" th:field="*{estadoConsulta}">
-              <option th:value="..">Seleccione un estado</option>
-              <option th:value="Programada">Programada</option>
-              <option th:value="Realizada">Realizada</option>
-              <option th:value="Cancelada">Cancelada</option>
-            </select>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-2 mr-2">Filtrar</button>
-        <a th:href="@{/gestion_consultas}" class="btn btn-secondary mt-2">Anular Filtros</a>
-      </form>
-    </div>
-  </div>
-
   <!-- Lista de consultas -->
+  <div th:if="${consultas.size() == 0}">
+    <p class="no-consultas">No hay consultas programadas.</p>
+  </div>
   <div th:each="consulta : ${consultas}">
     <div class="card">
       <div class="card-body">

@@ -82,6 +82,10 @@
   <div class="container-titulo">
     <h1>Gestión de Pacientes</h1>
   </div>
+  <!-- Verificación de la lista de pacientes -->
+  <div th:if="${pacientes.size() == 0}">
+    <p class="no-pacientes">No hay pacientes registrados.</p>
+  </div>
   <div th:each="paciente : ${pacientes}">
     <div class="paciente-card">
       <div class="paciente-info">
