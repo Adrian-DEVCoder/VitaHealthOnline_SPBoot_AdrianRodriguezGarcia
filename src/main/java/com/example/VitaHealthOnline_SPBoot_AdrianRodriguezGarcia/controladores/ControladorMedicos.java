@@ -297,4 +297,28 @@ public class ControladorMedicos {
         }
     }
 
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/anular_consulta")
+    public String anularConsulta(@RequestParam("id") int idConsulta,
+                                 Model model){
+        Consulta actualConsulta = repositorioConsulta.findById(idConsulta).orElse(null);
+        if(actualConsulta != null){
+            model.addAttribute("consulta", actualConsulta);
+            return "anular_consulta";
+        } else {
+            return "redirect:/gestion_consultas";
+        }
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @PostMapping("/anular_consulta")
+    public String procesarAnularConsulta(@ModelAttribute("consulta") Consulta eConsulta){
+        if(eConsulta != null){
+            repositorioConsulta.delete(eConsulta);
+            return "redirect:/gestion_consultas";
+        } else {
+            return "redirect:/gestion_consultas";
+        }
+    }
+
 }

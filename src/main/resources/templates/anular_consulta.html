@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Anulación de Consulta</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Confirmar Anulación de Consulta</h2>
+    <p>¿Estás seguro de que deseas anular esta consulta?</p>
+    <form action="#" th:action="@{/anular_consulta}" th:object="${consulta}" method="post">
+        <input type="hidden" name="idConsulta" th:field="${consulta.id_consulta}" />
+        <button type="submit" class="btn btn-danger">Sí, Anular</button>
+        <a th:href="@{/gestion_consultas}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>
