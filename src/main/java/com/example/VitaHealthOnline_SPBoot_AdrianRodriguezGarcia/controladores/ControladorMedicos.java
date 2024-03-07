@@ -2,11 +2,10 @@ package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.controladores;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.*;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.*;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.servicios.ServicioConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +17,7 @@ import java.util.List;
 @Controller
 public class ControladorMedicos {
 
+    ServicioConsulta servicioConsulta;
     @Autowired
     RepositorioPaciente repositorioPaciente;
     @Autowired
@@ -47,7 +47,7 @@ public class ControladorMedicos {
 
     @PreAuthorize("hasRole('MEDICO')")
     @GetMapping("/pagina_medico")
-    public String paginaMedico(@AuthenticationPrincipal UserDetails userDetails, Model model){
+    public String paginaMedico(@AuthenticationPrincipal UserDetails userDetails){
         String nombreUsuario = userDetails.getUsername();
         Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(nombreUsuario);
         if(usuarioActual != null) {
@@ -230,11 +230,11 @@ public class ControladorMedicos {
                 Paciente pacienteActual = repositorioPaciente.findById(idPaciente).orElse(null);
                 if(pacienteActual != null){
                     Consulta nuevaConsulta = new Consulta();
-                    nuevaConsulta.setEstado_consulta(consulta.getEstado_consulta());
+                    nuevaConsulta.setEstadoConsulta(consulta.getEstadoConsulta());
                     nuevaConsulta.setFecha_consulta(consulta.getFecha_consulta());
-                    String tipoConsulta = consulta.getTipo_consulta();
+                    String tipoConsulta = consulta.getTipoConsulta();
                     String consultaFormateada = tipoConsulta.replace("_"," ");
-                    nuevaConsulta.setTipo_consulta(consultaFormateada);
+                    nuevaConsulta.setTipoConsulta(consultaFormateada);
                     nuevaConsulta.setMedico(medicoActual);
                     nuevaConsulta.setPaciente(pacienteActual);
                     repositorioConsulta.save(nuevaConsulta);
@@ -250,8 +250,22 @@ public class ControladorMedicos {
     }
 
     @PreAuthorize("hasRole('MEDICO')")
-    @GetMapping("/gestion_citas")
-    public String gestionCitas(Model model){
-        return "gestion_citas";
+    @GetMapping("/gestion_consultas")
+    public String gestionConsultas(Model model){
+        List<Consulta> consultas = repositorioConsulta.findAll();
+        model.addAttribute("consultas", consultas);
+        model.addAttribute("consulta", consulta);
+        return "gestion_consultas";
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/filtrar_consultas")
+    public String obtenerFiltroConsultas(@RequestParam(required = false) String tipoConsulta,
+                                         @RequestParam(required = false) String estadoConsulta,
+                                         Model model){
+        List<Consulta> consultas = servicioConsulta.filtrarConsultas(tipoConsulta, estadoConsulta);
+        model.addAttribute("consultas", consultas);
+        model.addAttribute("consulta", consulta);
+        return "redirect:/gestion_consultas";
     }
 }

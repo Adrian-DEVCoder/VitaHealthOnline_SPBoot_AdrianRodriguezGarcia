@@ -1,6 +1,8 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Consulta;
+
+import java.util.Date;
 import java.util.List;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Paciente;
@@ -10,4 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepositorioConsulta extends JpaRepository<Consulta, Integer> {
     List<Consulta> findByPaciente(Paciente paciente);
+    List<Consulta> findAllByTipoConsulta(String tipoConsulta);
+    List<Consulta> findAllByEstadoConsulta(String estadoConsulta);
+    List<Consulta> findAllByTipoConsultaAndEstadoConsulta(String tipoConsulta, String estadoConsulta);
 }

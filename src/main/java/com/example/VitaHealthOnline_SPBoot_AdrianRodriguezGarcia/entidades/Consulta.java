@@ -29,6 +29,6 @@ public class Consulta {
     private Medico medico;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha_consulta;
-    private String tipo_consulta;
-    private String estado_consulta;
+    private String tipoConsulta;
+    private String estadoConsulta;
 }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Consultas</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .card-text {
+      font-size: 0.9em;
+    }
+    .btn-group {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="mb-4">Gestión de Consultas</h1>
+
+  <!-- Filtros de búsqueda -->
+  <div class="card">
+    <div class="card-body">
+      <form action="#" th:action="@{/filtrar_consultas}" th:object="${consulta}" method="get">
+        <div class="form-row">
+          <div class="col-md-4">
+            <label for="tipoConsulta">Tipo de Consulta:</label>
+            <select class="form-control" id="tipoConsulta" th:field="*{tipoConsulta}" required>
+              <option th:value="..">Seleccione un tipo de consulta</option>
+              <option th:value="Analisis_De_Sangre">Análisis de Sangre</option>
+              <option th:value="Consulta_General">Consulta General</option>
+              <option th:value="Especialista">Consulta con Especialista</option>
+              <option th:value="Revisión_Medica">Revisión Médica</option>
+              <option th:value="Ecografía">Ecografía</option>
+              <option th:value="Radiografía">Radiografía</option>
+              <option th:value="Mamografía">Mamografía</option>
+              <option th:value="Ultrasonido">Ultrasonido</option>
+              <option th:value="Endoscopia">Endoscopia</option>
+              <option th:value="Colonoscopia">Colonoscopia</option>
+              <option th:value="Consulta_Pediatrica">Consulta Pediátrica</option>
+              <option th:value="Consulta_Ginecologica">Consulta Ginecológica</option>
+              <option th:value="Consulta_Cardiologica">Consulta Cardiológica</option>
+              <option th:value="Consulta_Neurologica">Consulta Neurológica</option>
+              <option th:value="Consulta_Dermatologica">Consulta Dermatológica</option>
+              <option th:value="Consulta_Oftalmologica">Consulta Oftalmológica</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="estado">Estado:</label>
+            <select class="form-control" id="estado" name="estado" th:field="*{estadoConsulta}">
+              <option th:value="..">Seleccione un estado</option>
+              <option th:value="Programada">Programada</option>
+              <option th:value="Realizada">Realizada</option>
+              <option th:value="Cancelada">Cancelada</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a th:href="@{/gestion_consultas}" class="btn btn-secondary">Anular Filtros</a>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista de consultas -->
+  <div th:each="consulta : ${consultas}">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Consulta</h5>
+        <p class="card-text">
+          <strong>Paciente:</strong> <span th:text="${consulta.paciente.nombre_paciente}"></span><br>
+          <strong>Médico:</strong> <span th:text="${consulta.medico.nombre_profesional}"></span><br>
+          <strong>Fecha:</strong> <span th:text="${#dates.format(consulta.fecha_consulta, 'dd/MM/yyyy')}"></span><br>
+          <strong>Tipo:</strong> <span th:text="${consulta.tipoConsulta}"></span><br>
+          <strong>Estado:</strong> <span th:text="${consulta.estadoConsulta}"></span>
+        </p>
+        <div class="btn-group">
+          <a th:href="@{/editar_consulta(id=${consulta.id_consulta})}" class="btn btn-primary">Editar</a>
+          <a th:href="@{/anular_consulta(id=${consulta.id_consulta})}" class="btn btn-danger">Anular</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

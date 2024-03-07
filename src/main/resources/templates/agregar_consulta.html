@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             <label for="tipoConsulta">Tipo de Consulta:</label>
-            <select class="form-control" id="tipoConsulta" th:field="*{tipo_consulta}" required>
+            <select class="form-control" id="tipoConsulta" th:field="*{tipoConsulta}" required>
                 <option th:value="..">Seleccione un tipo de consulta</option>
                 <option th:value="Analisis_De_Sangre">Análisis de Sangre</option>
                 <option th:value="Consulta_General">Consulta General</option>
@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label for="estadoConsulta">Estado de la Consulta:</label>
-            <select class="form-control" id="estadoConsulta" th:field="*{estado_consulta}" required>
+            <select class="form-control" id="estadoConsulta" th:field="*{estadoConsulta}" required>
                 <option th:value="..">Seleccione el estado de la consulta</option>
                 <option th:value="Programada">Programada</option>
                 <option th:value="Cancelada">Cancelada</option>

@@ -3,6 +3,8 @@ package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.servicios;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Consulta;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Paciente;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioConsulta;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,5 +44,19 @@ public class ServicioConsulta {
     public List<Consulta> obtenerConsultasPorPaciente(int id) {
         Paciente paciente = repositorioPaciente.findById(id).orElse(null);
         return repositorioConsulta.findByPaciente(paciente);
+    }
+
+    public List<Consulta> filtrarConsultas(String tipoConsulta, String estadoConsulta){
+        if(tipoConsulta != null && estadoConsulta != null){
+            String tipoConsultaFormateada = tipoConsulta.replace("_"," ");
+            return repositorioConsulta.findAllByTipoConsultaAndEstadoConsulta(tipoConsultaFormateada, estadoConsulta);
+        } else if (tipoConsulta.equals("..")){
+            return repositorioConsulta.findAllByEstadoConsulta(estadoConsulta);
+        } else if (estadoConsulta.equals("..")){
+            String tipoConsultaFormateada = tipoConsulta.replace("_"," ");
+            return repositorioConsulta.findAllByTipoConsulta(tipoConsultaFormateada);
+        } else {
+            return repositorioConsulta.findAll();
+        }
     }
 }
