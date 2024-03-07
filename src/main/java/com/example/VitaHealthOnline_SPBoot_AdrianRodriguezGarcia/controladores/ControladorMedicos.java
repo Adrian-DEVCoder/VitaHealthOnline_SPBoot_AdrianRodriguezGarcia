@@ -23,8 +23,6 @@ public class ControladorMedicos {
     @Autowired
     RepositorioConsulta repositorioConsulta;
     @Autowired
-    RepositorioDatosSalud repositorioDatosSalud;
-    @Autowired
     RepositorioHistorial repositorioHistorial;
     @Autowired
     RepositorioDiagnostico repositorioDiagnostico;
@@ -38,8 +36,6 @@ public class ControladorMedicos {
     Diagnostico diagnostico;
     @Autowired
     Historial historial;
-    @Autowired
-    DatosSalud datosSalud;
     @Autowired
     Consulta consulta;
     @Autowired
@@ -111,12 +107,10 @@ public class ControladorMedicos {
         if(idPaciente != 0){
             Paciente pacienteActual = repositorioPaciente.findById(idPaciente).orElse(null);
             List<Consulta> consultas = repositorioConsulta.findByPaciente(pacienteActual);
-            List<DatosSalud> datosSalud = repositorioDatosSalud.findByPaciente(pacienteActual);
             Historial historial = repositorioHistorial.findHistorialByPaciente(pacienteActual);
             if(pacienteActual != null){
                 model.addAttribute("paciente",pacienteActual);
                 model.addAttribute("consultas",consultas);
-                model.addAttribute("datosSalud",datosSalud);
                 if(historial != null){
                     model.addAttribute("historial",historial);
                 }

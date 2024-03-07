@@ -1,7 +1,9 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.controladores;
 
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Consulta;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Paciente;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Usuario;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioConsulta;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioPaciente;
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.text.ParseException;
+import java.util.List;
 
 @Controller
 public class ControladorPacientes {
@@ -25,7 +28,11 @@ public class ControladorPacientes {
     @Autowired
     RepositorioPaciente repositorioPaciente;
     @Autowired
+    RepositorioConsulta repositorioConsulta;
+    @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    Consulta consulta;
     @Autowired
     Usuario usuario;
     @Autowired
@@ -149,8 +156,47 @@ public class ControladorPacientes {
 
     @PreAuthorize("hasRole('PACIENTE')")
     @GetMapping("/consultas_paciente")
-    public String consultaEnLinea(){
-        return "consultas_paciente";
+    public String consultasPaciente(Model model,
+                                    @AuthenticationPrincipal UserDetails userDetails){
+        String nombreUsuario = userDetails.getUsername();
+        Usuario usuario = repositorioUsuario.findUsuarioByNombre(nombreUsuario);
+        if(usuario != null){
+            Paciente paciente = repositorioPaciente.findPacienteByUsuario(usuario);
+            if(paciente != null){
+                List<Consulta> consultas = repositorioConsulta.findByPaciente(paciente);
+                if(consultas != null){
+                    model.addAttribute("consultas",consultas);
+                    return "consultas_paciente";
+                }
+            }
+        } else {
+            return "redirect:/pagina_paciente";
+        }
+        return "redirect:/pagina_paciente";
+    }
+
+    @PreAuthorize("hasRole('PACIENTE')")
+    @GetMapping("/anular_consulta_paciente")
+    public String anularConsultaPaciente(@RequestParam("id") int idConsulta,
+                                         Model model){
+        Consulta actualConsulta = repositorioConsulta.findById(idConsulta).orElse(null);
+        if(actualConsulta != null){
+            model.addAttribute("consulta", actualConsulta);
+            return "anular_consulta_paciente";
+        } else {
+            return "redirect:/pagina_paciente";
+        }
+    }
+
+    @PreAuthorize("hasRole('PACIENTE')")
+    @PostMapping("/anular_consulta_paciente")
+    public String procesarAnularConsultaPaciente(@ModelAttribute("consulta") Consulta eConsulta){
+        if(eConsulta != null){
+            repositorioConsulta.delete(eConsulta);
+            return "redirect:/consultas_paciente";
+        } else {
+            return "redirect:/consultas_paciente";
+        }
     }
 
     @PreAuthorize("hasRole('PACIENTE')")

@@ -2,7 +2,6 @@ package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Consulta;
 
-import java.util.Date;
 import java.util.List;
 
 import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Paciente;

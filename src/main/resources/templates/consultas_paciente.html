@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>VitaHealth | Mis Consultas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+        .card-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .card-text {
+            color: #666;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <a class="btn btn-primary btn-volver mt-3 mb-2" th:href="@{./pagina_paciente}">Volver al Panel de Control</a>
+    <h1 class="mb-4">Mis Consultas</h1>
 
+    <div th:if="${consultas.size() == 0}">
+        <h2 class="text-center">No tienes consultas registradas.</h2>
+    </div>
+    <div th:each="consulta : ${consultas}">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Consulta</h5>
+                <p class="card-text">
+                    <strong>Tipo:</strong> <span th:text="${consulta.tipoConsulta}"></span><br>
+                    <strong>Médico:</strong> <span th:text="${consulta.medico.nombre_profesional} + ' ' + ${consulta.medico.apellidos_profesional}"></span><br>
+                    <strong>Fecha:</strong> <span th:text="${#dates.format(consulta.fecha_consulta, 'dd/MM/yyyy')}"></span><br>
+                    <strong>Estado:</strong> <span th:text="${consulta.estadoConsulta}"></span>
+                </p>
+                <a th:href="@{/anular_consulta_paciente(id=${consulta.id_consulta})}" class="btn btn-danger">Anular</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
