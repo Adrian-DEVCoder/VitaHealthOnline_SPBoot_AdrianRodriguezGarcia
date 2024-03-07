@@ -268,4 +268,33 @@ public class ControladorMedicos {
         model.addAttribute("consulta", consulta);
         return "redirect:/gestion_consultas";
     }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/editar_consulta")
+    public String editarConsulta(@RequestParam("id") int idConsulta,Model model){
+        Consulta actualConsulta = repositorioConsulta.findById(idConsulta).orElse(null);
+        if(actualConsulta != null){
+            model.addAttribute("consulta", actualConsulta);
+            return "editar_consulta";
+        } else {
+            return "redirect:/gestion_consultas";
+        }
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @PostMapping("/editar_consulta")
+    public String procesarEditarConsulta(@ModelAttribute("consulta") Consulta consulta,
+                                         @RequestParam("idConsulta") int idConsulta){
+        Consulta consultaActual = repositorioConsulta.findById(idConsulta).orElse(null);
+        if(consultaActual != null){
+            consultaActual.setFecha_consulta(consulta.getFecha_consulta());
+            consultaActual.setTipoConsulta(consulta.getTipoConsulta());
+            consultaActual.setEstadoConsulta(consulta.getEstadoConsulta());
+            repositorioConsulta.save(consultaActual);
+            return "redirect:/gestion_consultas";
+        } else {
+            return "redirect:/gestion_consultas";
+        }
+    }
+
 }

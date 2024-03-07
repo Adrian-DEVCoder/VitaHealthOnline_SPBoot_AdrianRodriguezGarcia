@@ -8,8 +8,23 @@
     body {
       padding: 20px;
     }
-    .card {
+    .navbar {
+      background-color: #f8f9fa;
       margin-bottom: 20px;
+    }
+    .nav-item {
+      margin-right: 1rem;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 100%;
     }
     .card-title {
       font-weight: bold;
@@ -20,9 +35,43 @@
     .btn-group {
       margin-bottom: 10px;
     }
+    .ver-detalles-btn {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .ver-detalles-btn:hover {
+      background-color: #0056b3;
+      color: #f0f0f0;
+      text-decoration: none;
+    }
+    .container > * {
+      margin-bottom: 20px;
+    }
+    .container > :last-child {
+      margin-bottom: 0;
+    }
   </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Gestión de Consultas</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="./pagina_medico">Panel de Control</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
 <div class="container">
   <h1 class="mb-4">Gestión de Consultas</h1>
 
@@ -63,8 +112,8 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-        <a th:href="@{/gestion_consultas}" class="btn btn-secondary">Anular Filtros</a>
+        <button type="submit" class="btn btn-primary mt-2 mr-2">Filtrar</button>
+        <a th:href="@{/gestion_consultas}" class="btn btn-secondary mt-2">Anular Filtros</a>
       </form>
     </div>
   </div>
@@ -75,8 +124,8 @@
       <div class="card-body">
         <h5 class="card-title">Consulta</h5>
         <p class="card-text">
-          <strong>Paciente:</strong> <span th:text="${consulta.paciente.nombre_paciente}"></span><br>
-          <strong>Médico:</strong> <span th:text="${consulta.medico.nombre_profesional}"></span><br>
+          <strong>Paciente:</strong> <span th:text="${consulta.paciente.nombre_paciente} + ' ' + ${consulta.paciente.apellidos_paciente}"></span><br>
+          <strong>Médico:</strong> <span th:text="${consulta.medico.nombre_profesional} + ' ' + ${consulta.medico.apellidos_profesional}"></span><br>
           <strong>Fecha:</strong> <span th:text="${#dates.format(consulta.fecha_consulta, 'dd/MM/yyyy')}"></span><br>
           <strong>Tipo:</strong> <span th:text="${consulta.tipoConsulta}"></span><br>
           <strong>Estado:</strong> <span th:text="${consulta.estadoConsulta}"></span>

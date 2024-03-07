@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>VitaHealth | Agregar Consulta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Editar Consulta</h2>
+    <form action="#" th:action="@{/editar_consulta}" th:object="${consulta}" method="post">
+        <input type="hidden" id="idPaciente" name="idPaciente" th:value="${idPaciente}">
+
+        <div class="form-group">
+            <label for="fechaConsulta">Fecha de la Consulta:</label>
+            <input type="date" class="form-control" id="fechaConsulta" th:field="*{fecha_consulta}" required>
+        </div>
+        <div class="form-group">
+            <label for="tipoConsulta">Tipo de Consulta:</label>
+            <select class="form-control" id="tipoConsulta" th:field="*{tipoConsulta}" required>
+                <option th:value="..">Seleccione un tipo de consulta</option>
+                <option th:value="Analisis_De_Sangre">Análisis de Sangre</option>
+                <option th:value="Consulta_General">Consulta General</option>
+                <option th:value="Especialista">Consulta con Especialista</option>
+                <option th:value="Revisión_Medica">Revisión Médica</option>
+                <option th:value="Ecografía">Ecografía</option>
+                <option th:value="Radiografía">Radiografía</option>
+                <option th:value="Mamografía">Mamografía</option>
+                <option th:value="Ultrasonido">Ultrasonido</option>
+                <option th:value="Endoscopia">Endoscopia</option>
+                <option th:value="Colonoscopia">Colonoscopia</option>
+                <option th:value="Consulta_Pediatrica">Consulta Pediátrica</option>
+                <option th:value="Consulta_Ginecologica">Consulta Ginecológica</option>
+                <option th:value="Consulta_Cardiologica">Consulta Cardiológica</option>
+                <option th:value="Consulta_Neurologica">Consulta Neurológica</option>
+                <option th:value="Consulta_Dermatologica">Consulta Dermatológica</option>
+                <option th:value="Consulta_Oftalmologica">Consulta Oftalmológica</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="estadoConsulta">Estado de la Consulta:</label>
+            <select class="form-control" id="estadoConsulta" th:field="*{estadoConsulta}" required>
+                <option th:value="..">Seleccione el estado de la consulta</option>
+                <option th:value="Programada">Programada</option>
+                <option th:value="Cancelada">Cancelada</option>
+                <option th:value="Realizada">Realizada</option>
+            </select>
+        </div>
+        <input type="hidden" name="idConsulta" th:value="${consulta.getId_consulta()}">
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <a href="./gestion_consultas" class="btn btn-secondary ml-2">Volver al Panel de Control</a>
+    </form>
+</div>
+</body>
+</html>
