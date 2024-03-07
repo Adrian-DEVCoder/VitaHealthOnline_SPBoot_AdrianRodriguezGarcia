@@ -43,6 +43,4 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente")
     private List<Historial> historiales;
 
-    @OneToMany(mappedBy = "paciente")
-    private List<DatosSalud> datosSalud;
 }

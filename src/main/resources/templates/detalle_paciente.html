@@ -106,19 +106,6 @@
                     </a>
                 </div>
             </div>
-            <div class="datos-salud">
-                <h2>Datos Salud del Paciente</h2>
-                <div th:if="${not #lists.isEmpty(datosSalud)}">
-                    <ul class="list-group">
-                        <li class="list-group-item" th:each="datoSalud : ${datosSalud}">
-                            <span th:text="${datoSalud.fecha_dato} - ${datoSalud.tipo_dato} - ${datoSalud.valor_dato} ${datoSalud.unidad_medida}"></span>
-                        </li>
-                    </ul>
-                </div>
-                <div th:if="${#lists.isEmpty(datosSalud)}">
-                    <p>No hay datos de salud registrados para este paciente.</p>
-                </div>
-            </div>
         </div>
     </div>
 </div>
