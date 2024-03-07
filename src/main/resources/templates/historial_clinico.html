@@ -1,12 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8">
-    <title>VitaHealth - Online | Historial</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  </head>
-  <body>
-    <h1>Implementar el contenido del historial</h1>
-    <a href="./pagina_paciente" class="btn btn-secondary mb-3">Volver al Panel de Control</a>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>VitaHealth | Mi Historial Médico</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      transition: 0.3s;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .card-title {
+      font-weight: bold;
+      color: #333;
+    }
+    .card-text {
+      color: #666;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .no-records {
+      text-align: center;
+      padding: 20px;
+      font-size: 1.2em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <a class="btn btn-primary btn-volver mt-3 mb-2" th:href="@{./pagina_paciente}">Volver al Panel de Control</a>
+  <h1 class="mb-4">Mi Historial Médico</h1>
+  <div th:if="${diagnosticos.size() == 0}">
+    <div class="no-records">
+      No tienes diagnósticos médicos disponibles.
+    </div>
+  </div>
+  <div th:each="diagnostico : ${diagnosticos}">
+    <div class="card mb-3">
+      <div class="card-body">
+        <p class="card-text">
+          <strong>Diagnóstico: </strong> <span th:text="${diagnostico.diagnostico}"></span><br>
+          <strong>Tratamiento: </strong> <span th:text="${diagnostico.tratamiento}"></span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
 </html>

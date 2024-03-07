@@ -1,11 +1,7 @@
 package com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.controladores;
 
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Consulta;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Paciente;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.Usuario;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioConsulta;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioPaciente;
-import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.RepositorioUsuario;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.entidades.*;
+import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +26,15 @@ public class ControladorPacientes {
     @Autowired
     RepositorioConsulta repositorioConsulta;
     @Autowired
+    RepositorioHistorial repositorioHistorial;
+    @Autowired
+    RepositorioDiagnostico repositorioDiagnostico;
+    @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    Diagnostico diagnostico;
+    @Autowired
+    Historial historial;
     @Autowired
     Consulta consulta;
     @Autowired
@@ -201,8 +205,30 @@ public class ControladorPacientes {
 
     @PreAuthorize("hasRole('PACIENTE')")
     @GetMapping("/historial_clinico")
-    public String historialClinico(){
-        return "historial_clinico";
+    public String historialClinico(Model model,
+                                   @AuthenticationPrincipal UserDetails userDetails){
+        String nombreUsuario = userDetails.getUsername();
+        Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(nombreUsuario);
+        if(usuarioActual != null){
+            Paciente pacienteActual = repositorioPaciente.findPacienteByUsuario(usuarioActual);
+            if(pacienteActual != null){
+                Historial historialActual = repositorioHistorial.findHistorialByPaciente(pacienteActual);
+                if(historialActual != null){
+                    List<Diagnostico> diagnosticos = repositorioDiagnostico.findByHistorial(historialActual);
+                    if(diagnosticos != null){
+                        model.addAttribute("diagnosticos", diagnosticos);
+                        return "historial_clinico";
+                    }
+                } else {
+                    return "redirect:/pagina_paciente";
+                }
+            } else {
+                return "redirect:/pagina_paciente";
+            }
+        } else {
+            return "redirect:/pagina_paciente";
+        }
+        return "redirect:/pagina_paciente";
     }
 
 }
