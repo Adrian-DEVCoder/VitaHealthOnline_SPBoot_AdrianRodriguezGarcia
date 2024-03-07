@@ -198,6 +198,7 @@ public class ControladorMedicos {
                 Paciente paciente = repositorioPaciente.findById(idPaciente).orElse(null);
                 nuevoHistorial.setPaciente(paciente);
                 nuevoHistorial.setFecha_registro(new Date());
+                repositorioHistorial.save(nuevoHistorial);
                 return "redirect:/detalle_paciente?id="+idPaciente;
             } else {
                 return "redirect:/gestion_pacientes";

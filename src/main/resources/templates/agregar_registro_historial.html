@@ -43,7 +43,7 @@
 <body>
 <div class="container">
     <h2 class="text-center my-4">Agregar Registro al Historial del Paciente</h2>
-    <form action="./agregar_registro_historial" method="post" th:object="${historial}">
+    <form action="#" th:action="@{./agregar_registro_historial}" method="post" th:object="${historial}">
         <div class="form-group">
             <label for="diagnostico">Diagnóstico:</label>
             <textarea id="diagnostico" name="diagnostico" class="form-control" rows="4"></textarea>

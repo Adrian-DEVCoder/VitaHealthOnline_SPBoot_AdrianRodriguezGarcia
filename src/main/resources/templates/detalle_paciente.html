@@ -32,7 +32,7 @@
 </head>
 <body>
 <div class="container">
-    <button class="btn btn-primary btn-volver" onclick="window.history.back();">Volver a la Gestión de Pacientes</button>
+    <a class="btn btn-primary btn-volver" th:href="@{./gestion_pacientes}">Volver a la Gestión de Pacientes</a>
     <div class="row">
         <div class="col-md-3">
             <div class="paciente-info">
@@ -42,7 +42,7 @@
                 <p><strong>Telefono:</strong> <span th:text="${paciente.telefono}"></span></p>
                 <p><strong>Género:</strong> <span th:text="${paciente.sexo}"></span></p>
                 <p><strong>Direccion:</strong> <span th:text="${paciente.direccion}"></span></p>
-                <p><strong>Fecha de Nacimiento:</strong> <span th:text="${paciente.fechaNacimiento}"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span th:text="${#dates.format(paciente.fechaNacimiento, 'yyyy-MM-dd')}"></span></p>
             </div>
             <div class="consulta-info">
                 <h2>Consultas del Paciente</h2>
@@ -51,16 +51,16 @@
                         <li class="list-group-item" th:each="consulta : ${consultas}">
                             <span th:text="${consulta.fecha_consulta} - ${consulta.tipo_consulta}"></span>
                         </li>
-                        <button class="btn btn-primary btn-nueva-consulta" th:onclick="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
+                        <a class="btn btn-primary btn-nueva-consulta" th:href="@{/agregar_consulta(id=${paciente.id_paciente})}">
                             Añadir Nueva Consulta
-                        </button>
+                        </a>
                     </ul>
                 </div>
                 <div th:if="${#lists.isEmpty(consultas)}">
                     <p>No hay consultas registradas para este paciente.</p>
-                    <button class="btn btn-primary btn-nueva-consulta" th:href="'window.location.href=\'/agregar_consulta?id=' + ${paciente.id_paciente} + '\''">
+                    <a class="btn btn-primary btn-nueva-consulta" th:href="@{/agregar_consulta(id=${paciente.id_paciente})}">
                         Añadir Nueva Consulta
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -70,15 +70,17 @@
                 <h2>Historial del Paciente</h2>
                 <div th:if="${historial != null}">
                     <div th:if="${historial.diagnosticos != null}">
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="diagnostico : ${historial.diagnosticos}">
-                                <span th:text="${diagnostico.diagnostico}"></span>
-                                <span th:text="${diagnostico.tratamiento}"></span>
-                            </li>
-                            <a th:href="@{/agregar_registro_historial(id=${paciente.id_paciente})}" class="btn btn-primary btn-nuevo-registro">
-                                Añadir Nuevo Registro al Historial
-                            </a>
-                        </ul>
+                        <div class="card-columns">
+                            <div class="card" th:each="diagnostico : ${historial.diagnosticos}">
+                                <div class="card-body">
+                                    <h5 class="card-title">Diagnóstico: <span th:text="${diagnostico.diagnostico}"></span></h5>
+                                    <p class="card-text">Tratamiento: <span th:text="${diagnostico.tratamiento}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <a th:href="@{/agregar_registro_historial(id=${paciente.id_paciente})}" class="btn btn-primary btn-nuevo-registro">
+                            Añadir Nuevo Registro al Historial
+                        </a>
                     </div>
                     <div th:if="${historial.diagnosticos == null}">
                         <p>No hay datos de historial registrados para este paciente.</p>
