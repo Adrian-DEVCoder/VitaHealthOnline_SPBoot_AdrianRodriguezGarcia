@@ -254,10 +254,4 @@ public class ControladorMedicos {
     public String gestionCitas(Model model){
         return "gestion_citas";
     }
-
-    @PreAuthorize("hasRole('MEDICO')")
-    @GetMapping("/analisis_datos")
-    public String analisisDatos(Model model){
-        return "analisis_datos";
-    }
 }

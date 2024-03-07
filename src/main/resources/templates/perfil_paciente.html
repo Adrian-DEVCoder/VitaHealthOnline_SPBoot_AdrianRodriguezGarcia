@@ -11,12 +11,15 @@
     .btn-change-password {
       margin-bottom: 20px;
     }
+    .btn-volver-panel{
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 <div class="container">
+  <a href="./pagina_paciente" class="btn btn-secondary btn-volver-panel">Volver al Panel de Control</a>
   <h2>Editar Perfil del Paciente</h2>
-  <a href="./pagina_paciente" class="btn btn-secondary mb-3">Volver al Panel de Control</a>
   <form action="#" th:action="@{/guardar_cambios}" th:object="${paciente}" method="post">
     <div class="form-group">
       <label for="nombrePaciente">Nombre del Paciente:</label>
