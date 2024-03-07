@@ -209,6 +209,47 @@ public class ControladorMedicos {
     }
 
     @PreAuthorize("hasRole('MEDICO')")
+    @GetMapping("/agregar_consulta")
+    public String agregarConsulta(@RequestParam("id") int idPaciente,
+                                  Model model){
+        model.addAttribute("idPaciente", idPaciente);
+        model.addAttribute("nuevaconsulta", consulta);
+        return "agregar_consulta";
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @PostMapping("/agregar_consulta")
+    public String procesarAgregarConsulta(@ModelAttribute("nuevaconsulta") Consulta consulta,
+                                          @AuthenticationPrincipal UserDetails userDetails,
+                                          @RequestParam("idPaciente") int idPaciente){
+        String username = userDetails.getUsername();
+        Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(username);
+        if(usuarioActual != null){
+            Medico medicoActual = repositorioMedico.findMedicoByUsuario(usuarioActual);
+            if(medicoActual != null){
+                Paciente pacienteActual = repositorioPaciente.findById(idPaciente).orElse(null);
+                if(pacienteActual != null){
+                    Consulta nuevaConsulta = new Consulta();
+                    nuevaConsulta.setEstado_consulta(consulta.getEstado_consulta());
+                    nuevaConsulta.setFecha_consulta(consulta.getFecha_consulta());
+                    String tipoConsulta = consulta.getTipo_consulta();
+                    String consultaFormateada = tipoConsulta.replace("_"," ");
+                    nuevaConsulta.setTipo_consulta(consultaFormateada);
+                    nuevaConsulta.setMedico(medicoActual);
+                    nuevaConsulta.setPaciente(pacienteActual);
+                    repositorioConsulta.save(nuevaConsulta);
+                    return "redirect:/detalle_paciente?id="+idPaciente;
+                }
+            } else {
+                return "redirect:/gestion_pacientes";
+            }
+        } else {
+            return "redirect:/";
+        }
+        return "redirect:/gestion_pacientes";
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
     @GetMapping("/gestion_citas")
     public String gestionCitas(Model model){
         return "gestion_citas";

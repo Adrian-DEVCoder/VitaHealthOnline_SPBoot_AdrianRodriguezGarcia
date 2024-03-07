@@ -49,7 +49,17 @@
                 <div th:if="${not #lists.isEmpty(consultas)}">
                     <ul class="list-group">
                         <li class="list-group-item" th:each="consulta : ${consultas}">
-                            <span th:text="${consulta.fecha_consulta} - ${consulta.tipo_consulta}"></span>
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <strong>Fecha: </strong> <span th:text="${#dates.format(consulta.fecha_consulta, 'dd/MM/yyyy')}"></span>
+                                </div>
+                                <div>
+                                    <strong>Tipo: </strong> <span th:text="${consulta.tipo_consulta}"></span>
+                                </div>
+                                <div>
+                                    <strong>Estado: </strong><span th:text="${consulta.estado_consulta}"></span>
+                                </div>
+                            </div>
                         </li>
                         <a class="btn btn-primary btn-nueva-consulta" th:href="@{/agregar_consulta(id=${paciente.id_paciente})}">
                             Añadir Nueva Consulta
