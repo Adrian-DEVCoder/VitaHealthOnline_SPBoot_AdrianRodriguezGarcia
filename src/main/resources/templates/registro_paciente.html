@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="container">
-  <h2>Insertar Nuevo Paciente</h2>
+  <h2>Crear Nuevo Paciente</h2>
   <form action="#" th:action="@{/insertar_paciente}" th:object="${nuevopaciente}" method="post">
     <div class="form-group">
       <label for="nombre_paciente">Nombre del Paciente:</label>
@@ -42,7 +42,7 @@
       <label for="telefono">Teléfono:</label>
       <input type="text" class="form-control" id="telefono" th:field="*{telefono}" required>
     </div>
-    <button type="submit" class="btn btn-primary">Insertar Nuevo Paciente</button>
+    <button type="submit" class="btn btn-primary">Crear Paciente</button>
   </form>
 </div>
 </body>

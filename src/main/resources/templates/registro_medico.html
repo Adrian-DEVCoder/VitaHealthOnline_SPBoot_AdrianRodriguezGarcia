@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>Insertar Nuevo Perfil de Médico</h2>
+    <h2>Crear Perfil de Médico</h2>
     <form action="#" th:action="@{/insertar_medico}" th:object="${nuevomedico}" method="post">
         <div class="form-group">
             <label for="nombre_profesional">Nombre Profesional:</label>
@@ -37,7 +37,7 @@
             <label for="telefono">Teléfono:</label>
             <input type="text" class="form-control" id="telefono" th:field="*{telefono}" required>
         </div>
-        <button type="submit" class="btn btn-primary btn-nuevo-medico">Insertar Nuevo Médico</button>
+        <button type="submit" class="btn btn-primary btn-nuevo-medico">Crear Nuevo Médico</button>
     </form>
 </div>
 </body>
