@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepositorioMedico extends JpaRepository<Medico, Integer> {
     Medico findMedicoByUsuario(Usuario usuario);
-    int countByMedico(Medico medico);
 }

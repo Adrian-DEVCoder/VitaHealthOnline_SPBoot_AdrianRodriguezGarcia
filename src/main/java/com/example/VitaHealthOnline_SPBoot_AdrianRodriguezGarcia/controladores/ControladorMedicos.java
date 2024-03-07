@@ -5,13 +5,12 @@ import com.example.VitaHealthOnline_SPBoot_AdrianRodriguezGarcia.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -48,28 +47,52 @@ public class ControladorMedicos {
 
     @PreAuthorize("hasRole('MEDICO')")
     @GetMapping("/pagina_medico")
-    public String paginaMedico(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String nombreUsuario = authentication.getName();
+    public String paginaMedico(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        String nombreUsuario = userDetails.getUsername();
         Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(nombreUsuario);
-        Medico medicoActual = repositorioMedico.findMedicoByUsuario(usuarioActual);
-        boolean tieneDatos = verificarDatosRegistrados(medicoActual);
-        if(tieneDatos){
-            return "pagina_medico";
+        if(usuarioActual != null) {
+            Medico medico = repositorioMedico.findMedicoByUsuario(usuarioActual);
+            if(medico != null){
+                int idMedico = medico.getId_profesional();
+                if (idMedico != 0) {
+                    return "pagina_medico";
+                } else {
+                    return "no_medico_registrado";
+                }
+            } else {
+                return "no_medico_registrado";
+            }
         } else {
-            return "no_medico_registrado";
+            return "redirect:/";
         }
-    }
-
-    private boolean verificarDatosRegistrados(Medico medico){
-        return repositorioMedico.countByMedico(medico) > 0;
     }
 
     @PreAuthorize("hasRole('MEDICO')")
     @GetMapping("/registro_medico")
     public String registroMedico(Model model){
-        model.addAttribute("nuevopaciente", paciente);
+        model.addAttribute("nuevomedico", medico);
         return "registro_medico";
+    }
+
+    @PreAuthorize("hasRole('MEDICO')")
+    @PostMapping("/insertar_medico")
+    public String procesarInsertarMedico(@ModelAttribute("nuevomedico") Medico medico,
+                                         @AuthenticationPrincipal UserDetails userDetails){
+        String nombreUsuario = userDetails.getUsername();
+        Usuario usuarioActual = repositorioUsuario.findUsuarioByNombre(nombreUsuario);
+        if(usuarioActual != null){
+            Medico nuevoMedico = new Medico();
+            nuevoMedico.setNombre_profesional(medico.getNombre_profesional());
+            nuevoMedico.setApellidos_profesional(medico.getApellidos_profesional());
+            nuevoMedico.setEspecialidad(medico.getEspecialidad());
+            nuevoMedico.setCorreo_electronico(medico.getCorreo_electronico());
+            nuevoMedico.setTelefono(medico.getTelefono());
+            nuevoMedico.setUsuario(usuarioActual);
+            repositorioMedico.save(nuevoMedico);
+            return "pagina_medico";
+        } else {
+            return "redirect:/registro_medico";
+        }
     }
 
     @PreAuthorize("hasRole('MEDICO')")
